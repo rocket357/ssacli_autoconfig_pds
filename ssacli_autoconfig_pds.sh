@@ -11,7 +11,10 @@ function build_all_free {
         echo "Checking lds on slot $1";
         
         ## TODO - this doesn't seem to find single-disk raid 0's, ironically.
-        used_pds=($($SSACLI ctrl slot=$1 ld all show detail 2>/dev/null | awk '/physicaldrive/ {print $2}'))
+        #used_pds=($($SSACLI ctrl slot=$1 ld all show detail 2>/dev/null | awk '/physicaldrive/ {print $2}'))
+        
+        ## TODO - new approach to detecting in-use pds.  Needs testing.
+        used_pds=($($SSACLI ctrl slot=$1 pd all show detail 2>/dev/null | egrep -A2 "Array [A-Z]*$" | awk '/physicaldrive/ {print $2}'))
         
         for pd in $($SSACLI ctrl slot=$1 pd all show | awk '/physicaldrive/ {print $2}'); do
                 
