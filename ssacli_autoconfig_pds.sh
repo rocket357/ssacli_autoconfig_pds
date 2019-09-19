@@ -3,7 +3,7 @@
 SSACLI=$(which ssacli)
 
 # this function finds all of the free pds on a given ctrl slot and creates a single disk raid 0 on that pd.
-# Primarily useful for configurations where data redundancy are handled upstream (ceph, cassandra, etc...)
+# Primarily useful for configurations where data redundancy is handled upstream (ceph, cassandra, etc...)
 function build_all_free {
         echo "Checking lds on slot $slot";
         used_pds=($($SSACLI ctrl slot=$1 ld all show detail 2>/dev/null | awk '/physicaldrive/ {print $2}'))
